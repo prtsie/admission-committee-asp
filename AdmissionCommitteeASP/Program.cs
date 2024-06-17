@@ -1,3 +1,5 @@
+using Database;
+
 namespace AdmissionCommitteeASP;
 
 public class Program
@@ -7,6 +9,8 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
+        builder.Services.AddTransient<CommitteeContext>();
+        builder.Services.AddTransient<Services.DbAccessService>();
         builder.Services.AddControllersWithViews();
 
         var app = builder.Build();
@@ -25,7 +29,7 @@ public class Program
 
         app.MapControllerRoute(
             name: "default",
-            pattern: "{controller=Home}/{action=Index}/{id?}");
+            pattern: "{controller=Applicants}/{action=List}/{id?}");
 
         app.Run();
     }

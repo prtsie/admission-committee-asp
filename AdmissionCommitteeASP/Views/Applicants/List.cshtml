@@ -1,0 +1,61 @@
+﻿@using System.ComponentModel.DataAnnotations
+@using static System.Reflection.CustomAttributeExtensions
+@model IEnumerable<Applicant>
+@{
+    ViewData["Title"] = "Список абитуриентов";
+}
+
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Имя</th>
+        <th>Фамилия</th>
+        <th>Отчество</th>
+        <th>Дата рождения</th>
+        <th>Форма обучения</th>
+        <th>Пол</th>
+        <th>Баллы по математике</th>
+        <th>Баллы по русскому</th>
+        <th>Баллы по информатике</th>
+        <th>Сумма баллов</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var applicant in Model)
+    {
+        <tr>
+            <td>@applicant.Name</td>
+            <td>@applicant.Surname</td>
+            <td>@applicant.Patronymic</td>
+            <td>@applicant.BirthDay.Date</td>
+            <td>@(GetMemberDisplayName<FormOfEducation>(applicant.FormOfEducation.ToString()))</td>
+            <td>@(GetMemberDisplayName<Gender>(applicant.Gender.ToString()))</td>
+            <td>@applicant.MathScore</td>
+            <td>@applicant.RussianScore</td>
+            <td>@applicant.ItScore</td>
+            <td>@applicant.TotalScore</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+@functions
+{
+    public static string GetMemberDisplayName<T>(string memberName)
+    {
+        var member = typeof(T).GetMember(memberName).FirstOrDefault() ?? throw new NullReferenceException();
+        var attributes = member
+            .GetCustomAttributes(typeof(DisplayAttribute))
+            .Cast<DisplayAttribute>()
+            .ToList();
+        foreach (var attribute in attributes)
+        {
+            if (attribute.Name != null)
+            {
+                return attribute.Name;
+            }
+        }
+
+        throw new InvalidOperationException(!attributes.Any() ? "У значения нет атрибута Display" : "У атрибута Display не задано свойство Name");
+    }
+}
