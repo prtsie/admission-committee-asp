@@ -2,7 +2,7 @@
 
 namespace Database.Models
 {
-    internal sealed class DateRangeAttribute : ValidationAttribute
+    public sealed class DateRangeAttribute : ValidationAttribute
     {
         private readonly DateTime from;
         private readonly DateTime to;

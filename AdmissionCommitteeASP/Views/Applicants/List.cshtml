@@ -21,21 +21,36 @@
     </tr>
     </thead>
     <tbody>
-    @foreach (var applicant in Model)
-    {
-        <tr>
-            <td>@applicant.Name</td>
-            <td>@applicant.Surname</td>
-            <td>@applicant.Patronymic</td>
-            <td>@applicant.BirthDay.Date</td>
-            <td>@(GetMemberDisplayName<FormOfEducation>(applicant.FormOfEducation.ToString()))</td>
-            <td>@(GetMemberDisplayName<Gender>(applicant.Gender.ToString()))</td>
-            <td>@applicant.MathScore</td>
-            <td>@applicant.RussianScore</td>
-            <td>@applicant.ItScore</td>
-            <td>@applicant.TotalScore</td>
-        </tr>
+    <div id="MoreThanMinScoreCount">
+        Кол-во абитуриентов с баллами >=
+    </div>
+    @{
+        var count = 0;
+        foreach (var applicant in Model)
+        {
+            var moreThanMinScore = applicant.TotalScore >= ApplicantConstraints.MinScore;
+            if (moreThanMinScore)
+            {
+                count++;
+            }
+
+            <tr @(moreThanMinScore ? "class=table-success" : "")>
+                <td>@applicant.Name</td>
+                <td>@applicant.Surname</td>
+                <td>@applicant.Patronymic</td>
+                <td>@applicant.BirthDay.ToShortDateString()</td>
+                <td>@(GetMemberDisplayName<FormOfEducation>(applicant.FormOfEducation.ToString()))</td>
+                <td>@(GetMemberDisplayName<Gender>(applicant.Gender.ToString()))</td>
+                <td>@applicant.MathScore</td>
+                <td>@applicant.RussianScore</td>
+                <td>@applicant.ItScore</td>
+                <td>@applicant.TotalScore</td>
+            </tr>
+        }
     }
+    <script>
+        document.getElementById("MoreThanMinScoreCount").innerText += " @count"
+    </script>
     </tbody>
 </table>
 
