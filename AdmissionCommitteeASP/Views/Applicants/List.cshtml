@@ -1,6 +1,4 @@
-﻿@using System.ComponentModel.DataAnnotations
-@using static System.Reflection.CustomAttributeExtensions
-@model IEnumerable<Applicant>
+﻿@model IEnumerable<Applicant>
 @{
     ViewData["Title"] = "Список абитуриентов";
 }
@@ -22,29 +20,29 @@
     </thead>
     <tbody>
     <div id="MoreThanMinScoreCount">
-        Кол-во абитуриентов с баллами >=
+        Кол-во абитуриентов с баллами >= @ApplicantConstraints.MinScore:
     </div>
     @{
         var count = 0;
-        foreach (var applicant in Model)
+        for (var i = 0; i < Model.Count(); i++)
         {
-            var moreThanMinScore = applicant.TotalScore >= ApplicantConstraints.MinScore;
+            var moreThanMinScore = Model.ElementAt(i).TotalScore >= ApplicantConstraints.MinScore;
             if (moreThanMinScore)
             {
                 count++;
             }
 
             <tr @(moreThanMinScore ? "class=table-success" : "")>
-                <td>@applicant.Name</td>
-                <td>@applicant.Surname</td>
-                <td>@applicant.Patronymic</td>
-                <td>@applicant.BirthDay.ToShortDateString()</td>
-                <td>@(GetMemberDisplayName<FormOfEducation>(applicant.FormOfEducation.ToString()))</td>
-                <td>@(GetMemberDisplayName<Gender>(applicant.Gender.ToString()))</td>
-                <td>@applicant.MathScore</td>
-                <td>@applicant.RussianScore</td>
-                <td>@applicant.ItScore</td>
-                <td>@applicant.TotalScore</td>
+                <td>@Html.DisplayFor(model => model.ElementAt(i).Name)</td>
+                <td>@Html.DisplayFor(model => model.ElementAt(i).Surname)</td>
+                <td>@Html.DisplayFor(model => model.ElementAt(i).Patronymic)</td>
+                <td>@Html.DisplayFor(model => model.ElementAt(i).BirthDay)</td>
+                <td>@Html.DisplayFor(model => model.ElementAt(i).FormOfEducation)</td>
+                <td>@Html.DisplayFor(model => model.ElementAt(i).Gender)</td>
+                <td>@Html.DisplayFor(model => model.ElementAt(i).MathScore)</td>
+                <td>@Html.DisplayFor(model => model.ElementAt(i).RussianScore)</td>
+                <td>@Html.DisplayFor(model => model.ElementAt(i).ItScore)</td>
+                <td>@Html.DisplayFor(model => model.ElementAt(i).TotalScore)</td>
             </tr>
         }
     }
@@ -53,24 +51,3 @@
     </script>
     </tbody>
 </table>
-
-@functions
-{
-    public static string GetMemberDisplayName<T>(string memberName)
-    {
-        var member = typeof(T).GetMember(memberName).FirstOrDefault() ?? throw new NullReferenceException();
-        var attributes = member
-            .GetCustomAttributes(typeof(DisplayAttribute))
-            .Cast<DisplayAttribute>()
-            .ToList();
-        foreach (var attribute in attributes)
-        {
-            if (attribute.Name != null)
-            {
-                return attribute.Name;
-            }
-        }
-
-        throw new InvalidOperationException(!attributes.Any() ? "У значения нет атрибута Display" : "У атрибута Display не задано свойство Name");
-    }
-}
