@@ -27,6 +27,7 @@ namespace Database.Models
         [Required]
         [DateRange(ApplicantConstraints.MinAge, ApplicantConstraints.MaxAge)]
         [Display(Name = "Дата рождения")]
+        [DataType(DataType.Date)]
         public DateTime BirthDay { get; set; }
 
         ///<summary><inheritdoc cref="Models.FormOfEducation"/></summary>
