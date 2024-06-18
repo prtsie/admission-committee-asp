@@ -2,10 +2,12 @@
 
 namespace Database.Helpers
 {
+    /// <summary>Генератор объектов <see cref="Applicant"/></summary>
     public static class DataGenerator
     {
-        /// <summary>Генератор объектов <see cref="Applicant"/></summary>
+        /// <summary>Генерирует валидных абитуриентов</summary>
         /// <param name="count">количество абитуриентов для генерации</param>
+        /// <returns>Массив абитуриентов длиной <paramref name="count"/></returns>
         public static Applicant[] GenerateApplicants(int count)
         {
             var applicants = new Applicant[count];
