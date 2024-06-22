@@ -16,6 +16,7 @@
         <th>Баллы по русскому</th>
         <th>Баллы по информатике</th>
         <th>Сумма баллов</th>
+        <th>Действия</th>
     </tr>
     </thead>
     <tbody>
@@ -43,6 +44,7 @@
                 <td>@Html.DisplayFor(model => model.ElementAt(i).RussianScore)</td>
                 <td>@Html.DisplayFor(model => model.ElementAt(i).ItScore)</td>
                 <td>@Html.DisplayFor(model => model.ElementAt(i).TotalScore)</td>
+                <td><a asp-action="Delete" asp-route-id="@Model.ElementAt(i).Id">Удалить</a></td>
             </tr>
         }
     }

@@ -7,11 +7,16 @@ namespace AdmissionCommitteeASP.Controllers;
 
 public class ApplicantsController(DbAccessService db) : Controller
 {
-
     public async Task<IActionResult> List()
     {
         var applicants = await db.GetApplicants();
         return View(applicants);
+    }
+
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        await db.DeleteApplicantAsync(id);
+        return RedirectToAction(nameof(List));
     }
 
     public IActionResult Error()

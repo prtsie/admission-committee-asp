@@ -28,28 +28,28 @@ namespace AdmissionCommitteeASP.Services
 
         /// <summary>Обновляет данные абитуриента в БД</summary>
         /// <param name="applicant">абитуриент с обновленными данными</param>
-        /// <exception cref="InvalidOperationException">абитуриент не найден по id</exception>
         public async void UpdateApplicantAsync(Applicant applicant)
         {
-            var toUpdate = await context.Applicants.FindAsync(applicant.Id);
-            if (toUpdate != null)
-            {
-                context.Entry(context.Applicants.Attach(toUpdate)).CurrentValues.SetValues(applicant);
-                await context.SaveChangesAsync();
-            }
-            else
-            {
-                throw new InvalidOperationException("Абитуриента с таким id не существует.");
-            }
-        }
-
-        /// <summary>Удаление абитуриента из БД</summary>
-        /// <param name="applicant">абитуриент для удаления</param>
-        public async void DeleteApplicantAsync(Applicant applicant)
-        {
-            context.Applicants.Remove(applicant);
+            var toUpdate = await FindApplicantAsync(applicant.Id);
+            context.Entry(toUpdate).CurrentValues.SetValues(applicant);
             await context.SaveChangesAsync();
         }
+
+        /// <summary>Удаляет абитуриента из БД</summary>
+        /// <param name="id">id абитуриента</param>
+        public async Task DeleteApplicantAsync(Guid id)
+        {
+            var toDelete = await FindApplicantAsync(id);
+            context.Applicants.Remove(toDelete);
+            await context.SaveChangesAsync();
+        }
+
+        /// <summary>Находит абитуриента по id</summary>
+        /// <param name="id">id абитуриента</param>
+        /// <returns><see cref="Applicant"/>, присоединенный к контексту</returns>
+        /// <exception cref="InvalidOperationException">абитуриент не найден по id</exception>
+        public async Task<Applicant> FindApplicantAsync(Guid id) =>
+            await context.Applicants.FindAsync(id) ?? throw new InvalidOperationException("Абитуриента с таким id не существует.");
 
         /// <summary>Генерация абитуриентов в БД</summary>
         /// <param name="count">количество абитуриентов для генерации</param>
