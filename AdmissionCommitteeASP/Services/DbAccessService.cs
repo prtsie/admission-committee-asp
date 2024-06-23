@@ -20,7 +20,7 @@ namespace AdmissionCommitteeASP.Services
 
         /// <summary>Добавляет абитуриента в БД</summary>
         /// <param name="applicant">абитуриент для добавления</param>
-        public async void AddApplicant(Applicant applicant)
+        public async Task AddApplicant(Applicant applicant)
         {
             context.Applicants.Add(applicant);
             await context.SaveChangesAsync();
@@ -28,11 +28,14 @@ namespace AdmissionCommitteeASP.Services
 
         /// <summary>Обновляет данные абитуриента в БД</summary>
         /// <param name="applicant">абитуриент с обновленными данными</param>
-        public async void UpdateApplicantAsync(Applicant applicant)
+        public async Task UpdateApplicantAsync(Applicant applicant)
         {
             var toUpdate = await FindApplicantAsync(applicant.Id);
-            context.Entry(toUpdate).CurrentValues.SetValues(applicant);
-            await context.SaveChangesAsync();
+            if (toUpdate != null)
+            {
+                context.Entry(toUpdate).CurrentValues.SetValues(applicant);
+                await context.SaveChangesAsync();
+            }
         }
 
         /// <summary>Удаляет абитуриента из БД</summary>
@@ -40,16 +43,17 @@ namespace AdmissionCommitteeASP.Services
         public async Task DeleteApplicantAsync(Guid id)
         {
             var toDelete = await FindApplicantAsync(id);
-            context.Applicants.Remove(toDelete);
-            await context.SaveChangesAsync();
+            if (toDelete != null)
+            {
+                context.Applicants.Remove(toDelete);
+                await context.SaveChangesAsync();
+            }
         }
 
         /// <summary>Находит абитуриента по id</summary>
         /// <param name="id">id абитуриента</param>
         /// <returns><see cref="Applicant"/>, присоединенный к контексту</returns>
-        /// <exception cref="InvalidOperationException">абитуриент не найден по id</exception>
-        public async Task<Applicant> FindApplicantAsync(Guid id) =>
-            await context.Applicants.FindAsync(id) ?? throw new InvalidOperationException("Абитуриента с таким id не существует.");
+        public async Task<Applicant?> FindApplicantAsync(Guid id) => await context.Applicants.FindAsync(id);
 
         /// <summary>Генерация абитуриентов в БД</summary>
         /// <param name="count">количество абитуриентов для генерации</param>

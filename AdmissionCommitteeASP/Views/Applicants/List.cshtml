@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<Applicant>
 @{
     ViewData["Title"] = "Список абитуриентов";
+    var imageSize = 25;
 }
 
 <table class="table table-bordered">
@@ -44,7 +45,15 @@
                 <td>@Html.DisplayFor(model => model.ElementAt(i).RussianScore)</td>
                 <td>@Html.DisplayFor(model => model.ElementAt(i).ItScore)</td>
                 <td>@Html.DisplayFor(model => model.ElementAt(i).TotalScore)</td>
-                <td><a asp-action="Delete" asp-route-id="@Model.ElementAt(i).Id">Удалить</a></td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@Model.ElementAt(i).Id">
+                        <img src="images/edit.png" alt="Изменить" height="@imageSize" />
+                    </a>
+                    <span>/</span>
+                    <a asp-action="Delete" asp-route-id="@Model.ElementAt(i).Id">
+                        <img src="images/delete.png" alt="Удалить" height="@imageSize"/>
+                    </a>
+                </td>
             </tr>
         }
     }

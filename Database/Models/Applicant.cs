@@ -8,7 +8,7 @@ namespace Database.Models
     public sealed class Applicant : ICloneable
     {
         [Display(Name = "Id")]
-        public Guid Id { get; private set; } = Guid.NewGuid();
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         [Required]
         [MaxLength(ApplicantConstraints.MaxLength)]
@@ -28,7 +28,7 @@ namespace Database.Models
         [DateRange(ApplicantConstraints.MinAge, ApplicantConstraints.MaxAge)]
         [Display(Name = "Дата рождения")]
         [DataType(DataType.Date)]
-        public DateTime BirthDay { get; set; }
+        public DateTime BirthDay { get; set; } = DateTime.Today;
 
         ///<summary><inheritdoc cref="Models.FormOfEducation"/></summary>
         [Display(Name = "Форма обучения")]
@@ -52,6 +52,8 @@ namespace Database.Models
 
         [Display(Name = "Сумма баллов")]
         public int TotalScore => MathScore + RussianScore + ItScore;
+
+        public override string ToString() => $"{Name} {Surname} {Patronymic}".TrimEnd();
 
         public object Clone() => MemberwiseClone();
     }

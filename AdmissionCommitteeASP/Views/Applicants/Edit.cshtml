@@ -1,0 +1,74 @@
+﻿@using AdmissionCommitteeASP.Helpers
+@model Applicant
+
+@{
+    var title = Model.ToString();
+    if (string.IsNullOrEmpty(title))
+    {
+        title = "Добавление абитуриента";
+    }
+
+    ViewBag.Title = title;
+
+    var minDate = DateTime.Today.AddYears(-ApplicantConstraints.MaxAge);
+    var maxDate = DateTime.Today.AddYears(-ApplicantConstraints.MinAge);
+}
+
+<div class="row justify-content-center">
+    <form method="post" class="col-auto justify-content-end" style="text-align: right">
+        <input type="text" asp-for="Id" readonly hidden/>
+        <p >
+            @Html.LabelFor(model => model.Name)
+            @Html.EditorFor(model => model.Name)
+        </p>
+        <p >
+            @Html.LabelFor(model => model.Surname)
+            @Html.EditorFor(model => model.Surname)
+        </p>
+        <p >
+            @Html.LabelFor(model => model.Patronymic)
+            @Html.EditorFor(model => model.Patronymic)
+        </p>
+        <p >
+            @Html.LabelFor(model => model.BirthDay)
+            <input type="date" asp-for="BirthDay" min="@FormatDate(minDate)" max="@FormatDate(maxDate)"/>
+        </p>
+        <p >
+            @Html.LabelFor(model => model.Gender)
+            @Html.DropDownListFor(model => model.Gender,
+                new SelectList(Enum.GetValues<Gender>().Select(value => new EnumValueWithName<Gender>(value)),
+                    nameof(EnumValueWithName<Gender>.Value),
+                    nameof(EnumValueWithName<Gender>.DisplayName)))
+        </p>
+        <p >
+            @Html.LabelFor(model => model.FormOfEducation)
+            @Html.DropDownListFor(model => model.Gender,
+                new SelectList(Enum.GetValues<FormOfEducation>().Select(value => new EnumValueWithName<FormOfEducation>(value)),
+                    nameof(EnumValueWithName<FormOfEducation>.Value),
+                    nameof(EnumValueWithName<FormOfEducation>.DisplayName)))
+        </p>
+        <p >
+            @Html.LabelFor(model => model.ItScore)
+            @Html.EditorFor(model => model.ItScore)
+        </p>
+        <p >
+            @Html.LabelFor(model => model.MathScore)
+            @Html.EditorFor(model => model.MathScore)
+        </p>
+        <p >
+            @Html.LabelFor(model => model.RussianScore)
+            @Html.EditorFor(model => model.RussianScore)
+        </p>
+        <p>
+            <input type="submit"/>
+        </p>
+    </form>
+</div>
+
+@functions
+{
+    string FormatDate(DateTime date) =>
+        $"{PadInt(date.Year, 4)}-{PadInt(date.Month, 2)}-{PadInt(date.Day, 2)}";
+
+    string PadInt(int num, int length) => num.ToString().PadLeft(length, '0');
+}
