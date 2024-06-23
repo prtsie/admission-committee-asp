@@ -3,11 +3,13 @@ using System.Reflection;
 
 namespace AdmissionCommitteeASP.Helpers
 {
+    /// <summary> Структура, содержащая значение и соответствующий ему текст для заполнения <see cref="Microsoft.AspNetCore.Mvc.Rendering.SelectList"/> </summary>
+    /// <param name="value">значение enum</param>
+    /// <typeparam name="T">тип enum</typeparam>
     public readonly struct EnumValueWithName<T>(T value)
         where T : Enum
     {
         public T Value { get; } = value;
-
         public string DisplayName { get; } = GetMemberDisplayName(value);
 
         /// <summary>
