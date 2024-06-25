@@ -9,7 +9,7 @@ namespace AdmissionCommitteeASP.Services
     /// Сервис для доступа к базе данных через контекст <see cref="CommitteeContext"/>
     /// </summary>
     /// <param name="context">контекст базы данных</param>
-    public class DbAccessService(CommitteeContext context)
+    public class DbAccessService(CommitteeContext context, Serilog.ILogger logger)
     {
         /// <summary>Запрашивает всех абитуриентов из БД</summary>
         /// <returns>Список абитуриентов</returns>
@@ -24,6 +24,7 @@ namespace AdmissionCommitteeASP.Services
         {
             context.Applicants.Add(applicant);
             await context.SaveChangesAsync();
+            logger.Information("Добавлен {@applicant}", applicant);
         }
 
         /// <summary>Обновляет данные абитуриента в БД</summary>
@@ -33,6 +34,7 @@ namespace AdmissionCommitteeASP.Services
             var toUpdate = await FindApplicantAsync(applicant.Id);
             if (toUpdate != null)
             {
+                logger.Information("Изменён {@toUpdate}, новые значения: {@applicant}", toUpdate, applicant);
                 context.Entry(toUpdate).CurrentValues.SetValues(applicant);
                 await context.SaveChangesAsync();
             }
@@ -45,6 +47,7 @@ namespace AdmissionCommitteeASP.Services
             var toDelete = await FindApplicantAsync(id);
             if (toDelete != null)
             {
+                logger.Information("Удалён {@applicant}", toDelete);
                 context.Applicants.Remove(toDelete);
                 await context.SaveChangesAsync();
             }
