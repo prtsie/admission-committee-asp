@@ -19,19 +19,23 @@
         <input type="text" asp-for="Id" readonly hidden/>
         <p >
             @Html.LabelFor(model => model.Name)
-            @Html.EditorFor(model => model.Name)
+            @Html.EditorFor(model => model.Name)<br/>
+            <span asp-validation-for="Name"></span>
         </p>
         <p >
             @Html.LabelFor(model => model.Surname)
-            @Html.EditorFor(model => model.Surname)
+            @Html.EditorFor(model => model.Surname)<br/>
+            <span asp-validation-for="Surname"></span>
         </p>
         <p >
             @Html.LabelFor(model => model.Patronymic)
-            @Html.EditorFor(model => model.Patronymic)
+            @Html.EditorFor(model => model.Patronymic)<br/>
+            <span asp-validation-for="Patronymic"></span>
         </p>
         <p >
             @Html.LabelFor(model => model.BirthDay)
-            <input type="date" asp-for="BirthDay" min="@FormatDate(minDate)" max="@FormatDate(maxDate)"/>
+            <input type="date" asp-for="BirthDay" min="@FormatDate(minDate)" max="@FormatDate(maxDate)"/><br/>
+            <span asp-validation-for="BirthDay"></span>
         </p>
         <p >
             @Html.LabelFor(model => model.Gender)
@@ -49,15 +53,18 @@
         </p>
         <p >
             @Html.LabelFor(model => model.ItScore)
-            @Html.EditorFor(model => model.ItScore)
+            @Html.EditorFor(model => model.ItScore)<br/>
+            <span asp-validation-for="ItScore"></span>
         </p>
         <p >
             @Html.LabelFor(model => model.MathScore)
-            @Html.EditorFor(model => model.MathScore)
+            @Html.EditorFor(model => model.MathScore)<br/>
+            <span asp-validation-for="MathScore"></span>
         </p>
         <p >
             @Html.LabelFor(model => model.RussianScore)
-            @Html.EditorFor(model => model.RussianScore)
+            @Html.EditorFor(model => model.RussianScore)<br/>
+            <span asp-validation-for="RussianScore"></span>
         </p>
         <p>
             <input type="submit"/>
