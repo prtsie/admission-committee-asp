@@ -1,0 +1,64 @@
+﻿@model IEnumerable<Applicant>
+@{
+    ViewData["Title"] = "Список абитуриентов";
+    var imageSize = 25;
+}
+
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Имя</th>
+        <th>Фамилия</th>
+        <th>Отчество</th>
+        <th>Дата рождения</th>
+        <th>Форма обучения</th>
+        <th>Пол</th>
+        <th>Баллы по математике</th>
+        <th>Баллы по русскому</th>
+        <th>Баллы по информатике</th>
+        <th>Сумма баллов</th>
+        <th>Действия</th>
+    </tr>
+    </thead>
+    <tbody>
+    <div id="MoreThanMinScoreCount">
+        Кол-во абитуриентов с баллами >= @ApplicantConstraints.MinScore:
+    </div>
+    @{
+        var count = 0;
+        for (var i = 0; i < Model.Count(); i++)
+        {
+            var moreThanMinScore = Model.ElementAt(i).TotalScore >= ApplicantConstraints.MinScore;
+            if (moreThanMinScore)
+            {
+                count++;
+            }
+
+            <tr @(moreThanMinScore ? "class=table-success" : "")>
+                <td>@Html.DisplayFor(model => model.ElementAt(i).Name)</td>
+                <td>@Html.DisplayFor(model => model.ElementAt(i).Surname)</td>
+                <td>@Html.DisplayFor(model => model.ElementAt(i).Patronymic)</td>
+                <td>@Html.DisplayFor(model => model.ElementAt(i).BirthDay)</td>
+                <td>@Html.DisplayFor(model => model.ElementAt(i).FormOfEducation)</td>
+                <td>@Html.DisplayFor(model => model.ElementAt(i).Gender)</td>
+                <td>@Html.DisplayFor(model => model.ElementAt(i).MathScore)</td>
+                <td>@Html.DisplayFor(model => model.ElementAt(i).RussianScore)</td>
+                <td>@Html.DisplayFor(model => model.ElementAt(i).ItScore)</td>
+                <td>@Html.DisplayFor(model => model.ElementAt(i).TotalScore)</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@Model.ElementAt(i).Id">
+                        <img src="images/edit.png" alt="Изменить" height="@imageSize" />
+                    </a>
+                    <span>/</span>
+                    <a asp-action="Delete" asp-route-id="@Model.ElementAt(i).Id">
+                        <img src="images/delete.png" alt="Удалить" height="@imageSize"/>
+                    </a>
+                </td>
+            </tr>
+        }
+    }
+    <script>
+        document.getElementById("MoreThanMinScoreCount").innerText += " @count"
+    </script>
+    </tbody>
+</table>

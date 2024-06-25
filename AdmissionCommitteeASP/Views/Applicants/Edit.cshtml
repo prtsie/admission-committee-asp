@@ -1,0 +1,74 @@
+﻿@model Applicant
+
+@{
+    var title = Model.ToString();
+    if (string.IsNullOrEmpty(title))
+    {
+        title = "Добавление абитуриента";
+    }
+
+    ViewBag.Title = title;
+
+    var minDate = DateTime.Today.AddYears(-ApplicantConstraints.MaxAge);
+    var maxDate = DateTime.Today.AddYears(-ApplicantConstraints.MinAge);
+}
+
+<div class="row justify-content-center">
+    <form method="post" class="col-auto justify-content-end" style="text-align: right">
+        <input type="text" asp-for="Id" readonly hidden/>
+        <p >
+            @Html.LabelFor(model => model.Name)
+            @Html.EditorFor(model => model.Name)<br/>
+            <span asp-validation-for="Name"></span>
+        </p>
+        <p >
+            @Html.LabelFor(model => model.Surname)
+            @Html.EditorFor(model => model.Surname)<br/>
+            <span asp-validation-for="Surname"></span>
+        </p>
+        <p >
+            @Html.LabelFor(model => model.Patronymic)
+            @Html.EditorFor(model => model.Patronymic)<br/>
+            <span asp-validation-for="Patronymic"></span>
+        </p>
+        <p >
+            @Html.LabelFor(model => model.BirthDay)
+            <input type="date" asp-for="BirthDay" min="@FormatDate(minDate)" max="@FormatDate(maxDate)"/><br/>
+            <span asp-validation-for="BirthDay"></span>
+        </p>
+        <p >
+            @Html.LabelFor(model => model.Gender)
+            @Html.DropDownListFor(model => model.Gender, Html.GetEnumSelectList<Gender>())
+        </p>
+        <p >
+            @Html.LabelFor(model => model.FormOfEducation)
+            @Html.DropDownListFor(model => model.Gender, Html.GetEnumSelectList<FormOfEducation>())
+        </p>
+        <p >
+            @Html.LabelFor(model => model.ItScore)
+            @Html.EditorFor(model => model.ItScore)<br/>
+            <span asp-validation-for="ItScore"></span>
+        </p>
+        <p >
+            @Html.LabelFor(model => model.MathScore)
+            @Html.EditorFor(model => model.MathScore)<br/>
+            <span asp-validation-for="MathScore"></span>
+        </p>
+        <p >
+            @Html.LabelFor(model => model.RussianScore)
+            @Html.EditorFor(model => model.RussianScore)<br/>
+            <span asp-validation-for="RussianScore"></span>
+        </p>
+        <p>
+            <input type="submit"/>
+        </p>
+    </form>
+</div>
+
+@functions
+{
+    string FormatDate(DateTime date) =>
+        $"{PadInt(date.Year, 4)}-{PadInt(date.Month, 2)}-{PadInt(date.Day, 2)}";
+
+    string PadInt(int num, int length) => num.ToString().PadLeft(length, '0');
+}
