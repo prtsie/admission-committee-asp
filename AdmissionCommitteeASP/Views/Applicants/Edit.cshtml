@@ -1,5 +1,4 @@
-﻿@using AdmissionCommitteeASP.Helpers
-@model Applicant
+﻿@model Applicant
 
 @{
     var title = Model.ToString();
@@ -39,17 +38,11 @@
         </p>
         <p >
             @Html.LabelFor(model => model.Gender)
-            @Html.DropDownListFor(model => model.Gender,
-                new SelectList(Enum.GetValues<Gender>().Select(value => new EnumValueWithName<Gender>(value)),
-                    nameof(EnumValueWithName<Gender>.Value),
-                    nameof(EnumValueWithName<Gender>.DisplayName)))
+            @Html.DropDownListFor(model => model.Gender, Html.GetEnumSelectList<Gender>())
         </p>
         <p >
             @Html.LabelFor(model => model.FormOfEducation)
-            @Html.DropDownListFor(model => model.Gender,
-                new SelectList(Enum.GetValues<FormOfEducation>().Select(value => new EnumValueWithName<FormOfEducation>(value)),
-                    nameof(EnumValueWithName<FormOfEducation>.Value),
-                    nameof(EnumValueWithName<FormOfEducation>.DisplayName)))
+            @Html.DropDownListFor(model => model.Gender, Html.GetEnumSelectList<FormOfEducation>())
         </p>
         <p >
             @Html.LabelFor(model => model.ItScore)
